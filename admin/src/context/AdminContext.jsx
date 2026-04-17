@@ -65,7 +65,15 @@ const AdminContextProvider = (props) => {
 
             const { data } = await axios.get(backendUrl + '/api/admin/appointments', { headers: { aToken } })
             if (data.success) {
-                setAppointments(data.appointments.reverse())
+                // Fix localhost image URLs in appointments
+                const appointmentsWithImages = data.appointments.map(appointment => ({
+                    ...appointment,
+                    docData: appointment.docData ? {
+                        ...appointment.docData,
+                        image: appointment.docData.image?.includes('localhost') ? localDoctors[0].image : appointment.docData.image
+                    } : appointment.docData
+                }))
+                setAppointments(appointmentsWithImages.reverse())
             } else {
                 toast.error(data.message)
             }
@@ -105,7 +113,18 @@ const AdminContextProvider = (props) => {
             const { data } = await axios.get(backendUrl + '/api/admin/dashboard', { headers: { aToken } })
 
             if (data.success) {
-                setDashData(data.dashData)
+                // Fix localhost image URLs in latestAppointments
+                const dashDataWithImages = {
+                    ...data.dashData,
+                    latestAppointments: data.dashData.latestAppointments.map(appointment => ({
+                        ...appointment,
+                        docData: appointment.docData ? {
+                            ...appointment.docData,
+                            image: appointment.docData.image?.includes('localhost') ? localDoctors[0].image : appointment.docData.image
+                        } : appointment.docData
+                    }))
+                }
+                setDashData(dashDataWithImages)
             } else {
                 toast.error(data.message)
             }
