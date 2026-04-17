@@ -32,5 +32,10 @@ app.get("/", (req, res) => {
   res.send("API Working");
 });
 
+// CORS test endpoint
+app.get("/test-cors", (req, res) => {
+  res.json({ message: "CORS test successful", origin: req.headers.origin });
+});
+
 // Start server
 app.listen(port, () => console.log(`✅ Server started on PORT: ${port}`));
