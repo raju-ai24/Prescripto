@@ -11,12 +11,8 @@ import adminRouter from "./routes/adminRoute.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
-// ✅ CORS Configuration (using wildcard for testing)
-app.use(cors({
-  origin: "*", // Allow all origins for testing
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "token", "atoken", "dtoken"],
-}));
+// ✅ CORS Configuration (basic wildcard)
+app.use(cors());
 
 // connect to DB + Cloudinary
 connectDB();
