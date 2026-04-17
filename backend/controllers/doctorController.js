@@ -93,6 +93,10 @@ const doctorList = async (req, res) => {
     try {
 
         const doctors = await doctorModel.find({}).select(['-password', '-email'])
+        console.log("Doctors fetched:", doctors.length)
+        if (doctors.length > 0) {
+            console.log("First doctor image:", doctors[0].image)
+        }
         res.json({ success: true, doctors })
 
     } catch (error) {
