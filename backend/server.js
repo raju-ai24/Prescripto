@@ -23,6 +23,7 @@ app.use(express.json());
 const allowedOrigins = [
   "http://localhost:5173",  // frontend
   "http://localhost:5174",  // admin
+  "https://prescripto-frontend-g05d.onrender.com", // actual deployed frontend
   process.env.FRONTEND_URL || "https://prescripto-hospital-management-system.onrender.com", // production frontend
   process.env.ADMIN_URL || "https://prescripto-admin.onrender.com" // production admin
 ];
