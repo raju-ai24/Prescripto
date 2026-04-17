@@ -1,6 +1,7 @@
 import { createContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from 'axios'
+import { doctors as localDoctors } from '../assets/assets.js'
 
 export const AppContext = createContext()
 
@@ -21,7 +22,12 @@ const AppContextProvider = (props) => {
             const { data } = await axios.get(`${backendUrl}/api/doctor/list`)
             console.log("Fetch Doctors Response:", data);
             if (data.success) {
-                setDoctors(data.doctors)
+                // Fallback to local images if backend has localhost URLs
+                const doctorsWithImages = data.doctors.map((doc, index) => ({
+                    ...doc,
+                    image: doc.image?.includes('localhost') ? localDoctors[index % localDoctors.length].image : doc.image
+                }))
+                setDoctors(doctorsWithImages)
             } else {
                 toast.error(data.message)
             }
