@@ -11,30 +11,11 @@ import adminRouter from "./routes/adminRoute.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
-// ✅ CORS Configuration (must be first middleware)
-const allowedOrigins = [
-  "http://localhost:5173",  // frontend
-  "http://localhost:5174",  // admin
-  "https://prescripto-frontend-g05d.onrender.com", // actual deployed frontend
-  process.env.FRONTEND_URL || "https://prescripto-hospital-management-system.onrender.com", // production frontend
-  process.env.ADMIN_URL || "https://prescripto-admin.onrender.com" // production admin
-];
-
+// ✅ CORS Configuration (using wildcard for testing)
 app.use(cors({
-  origin: function (origin, callback) {
-    console.log("CORS request from origin:", origin);
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      console.log("Origin not allowed:", origin);
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: "*", // Allow all origins for testing
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "token", "atoken", "dtoken"],
-  credentials: true,
 }));
 
 // connect to DB + Cloudinary
