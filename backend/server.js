@@ -11,8 +11,12 @@ import adminRouter from "./routes/adminRoute.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
-// ✅ CORS Configuration (basic wildcard)
-app.use(cors());
+// ✅ CORS Configuration
+app.use(cors({
+  origin: ["https://prescripto-frontend-g05d.onrender.com", "http://localhost:5173", "http://localhost:5174"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "token", "atoken", "dtoken"],
+}));
 
 // connect to DB + Cloudinary
 connectDB();
