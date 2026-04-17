@@ -10,16 +10,8 @@ import adminRouter from "./routes/adminRoute.js";
 // app config
 const app = express();
 const port = process.env.PORT || 4000;
-app.use(express.static('public'));
 
-// connect to DB + Cloudinary
-connectDB();
-connectCloudinary();
-
-// middlewares
-app.use(express.json());
-
-// ✅ CORS Configuration (fixed: include 'token' in allowedHeaders)
+// ✅ CORS Configuration (must be first middleware)
 const allowedOrigins = [
   "http://localhost:5173",  // frontend
   "http://localhost:5174",  // admin
@@ -31,9 +23,17 @@ const allowedOrigins = [
 app.use(cors({
   origin: allowedOrigins,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "token", "atoken", "dtoken"], // ✅ added 'token', 'atoken', and 'dtoken'
+  allowedHeaders: ["Content-Type", "Authorization", "token", "atoken", "dtoken"],
   credentials: true,
 }));
+
+// connect to DB + Cloudinary
+connectDB();
+connectCloudinary();
+
+// middlewares
+app.use(express.json());
+app.use(express.static('public'));
 
 // API endpoints
 app.use("/api/user", userRouter);
